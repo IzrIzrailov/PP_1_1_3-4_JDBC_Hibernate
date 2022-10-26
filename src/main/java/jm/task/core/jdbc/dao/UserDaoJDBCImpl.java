@@ -15,12 +15,15 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void createUsersTable() {
-        String createUsersTable = "CREATE TABLE IF NOT EXISTS users " +
-                "(`id` BIGINT PRIMARY KEY AUTO_INCREMENT, " +
-                "`name` VARCHAR(32), " +
-                "`last_name` VARCHAR(32), " +
-                "`age` TINYINT);";
+        String createUsersTable = """
+                CREATE TABLE IF NOT EXISTS users (
+                    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,  
+                    `name` VARCHAR(32),  
+                    `last_name` VARCHAR(32),  
+                    `age` TINYINT);
+                """;
 
         try (Statement statement = Util.getConnection().createStatement()) {
             statement.execute(createUsersTable);
@@ -29,6 +32,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void dropUsersTable() {
         String dropUsersTable = "DROP TABLE IF EXISTS users";
 
@@ -39,6 +43,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         String saveUser = "INSERT INTO users (`name`, `last_name`, `age`) VALUES (?, ?, ?);";
 
@@ -53,6 +58,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void removeUserById(long id) {
         String removeUserById = "DELETE FROM users WHERE `id`=?;";
 
@@ -64,6 +70,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String getAllUsers = "SELECT * FROM users";
@@ -85,6 +92,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return userList;
     }
 
+    @Override
     public void cleanUsersTable() {
         String cleanUsersTable = "TRUNCATE TABLE users";
 
