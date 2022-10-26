@@ -45,6 +45,7 @@ public class Util {
                         .setProperty(Environment.PASS, PASSWORD)
                         .setProperty(Environment.DRIVER, DRIVER)
                         .setProperty(Environment.DIALECT, DIALECT)
+                        .setProperty(Environment.SHOW_SQL, "true")
                         .addAnnotatedClass(User.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
