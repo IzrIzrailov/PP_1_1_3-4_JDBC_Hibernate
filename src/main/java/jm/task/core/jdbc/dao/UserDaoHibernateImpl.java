@@ -21,7 +21,7 @@ public class UserDaoHibernateImpl implements UserDao {
                 CREATE TABLE IF NOT EXISTS users 
                     (`id` BIGINT PRIMARY KEY AUTO_INCREMENT, 
                     `name` VARCHAR(32), 
-                    `lastName` VARCHAR(32), 
+                    `last_name` VARCHAR(32), 
                     `age` TINYINT);
                 """;
         Transaction transaction = null;
@@ -29,11 +29,13 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = Util.getSession().openSession()) {
             transaction = session.beginTransaction();
             session.createNativeQuery(createUsersTable).executeUpdate();
+            System.out.println("Таблица users создана");
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("Таблица users ну удалось создать");
             e.printStackTrace();
         }
 
@@ -46,12 +48,14 @@ public class UserDaoHibernateImpl implements UserDao {
 
         try (Session session = Util.getSession().openSession()) {
             transaction = session.beginTransaction();
-            session.createNativeQuery(dropUsersTable);
+            session.createNativeQuery(dropUsersTable).executeUpdate();
+            System.out.println("Таблица users удалена");
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("Таблица users не удалось удалить");
             e.printStackTrace();
         }
     }
@@ -69,6 +73,7 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("User с именем – " + name + " не удалост добавить в базу данных");
             e.printStackTrace();
         }
     }
@@ -80,11 +85,13 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = Util.getSession().openSession()) {
             transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
+            System.out.println("Пользователь с id = " + id + " удален");
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("Пользователя с id = " + id + " не удалось удалить");
             e.printStackTrace();
         }
     }
@@ -104,8 +111,10 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("Не удалось получить всех пользователей");
             e.printStackTrace();
         }
+        System.out.println("Все пользователи: ");
         return userList;
     }
 
@@ -117,11 +126,13 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = Util.getSession().openSession()) {
             transaction = session.beginTransaction();
             session.createNativeQuery(cleanUsersTable).executeUpdate();
+            System.out.println("Таблица очищена");
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.out.println("Таблицу не удалось очистить");
             e.printStackTrace();
         }
     }
